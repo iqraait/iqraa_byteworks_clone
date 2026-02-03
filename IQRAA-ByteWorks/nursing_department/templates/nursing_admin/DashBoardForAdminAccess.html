@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iqraa ByteeWorks</title>
+  <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen font-inter">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 p-4 md:p-6 flex justify-between items-center sticky top-0 z-50">
+    <div class="text-2xl font-bold text-black">
+      IQRAA<span class="font-light">Hospital</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="relative text-gray-600 hover:text-black">
+        <i class="far fa-bell text-xl"></i>
+        <span class="absolute -top-1 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+      </button>
+      <div class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-700">
+          AD
+        </div>
+        <div>
+          {% if user.is_authenticated %}
+            <p class="text-sm font-medium">IQRAA ID: {{ iqraa_id }}</p>
+          {% else %}
+            <p class="text-sm text-gray-500">No authenticated user</p>
+          {% endif %}
+          <p class="text-xs text-gray-500">Nursing Admin</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Container -->
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 p-6 hidden md:flex flex-col sticky top-[72px] h-[calc(100vh-72px)]">
+      <div class="text-xs uppercase tracking-wide text-gray-500 mb-4">
+        Main Navigation
+      </div>
+      <nav class="flex flex-col space-y-2">
+        <a href="{% url 'nursing_department:nursing_admin_dashboard' %}"
+          class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+          <i class="fas fa-home mr-3"></i> Dashboard
+        </a>
+        <a href="#"
+          class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+          <i class="fas fa-file-alt mr-3"></i> Forms
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+          <i class="fas fa-user-md mr-3"></i> Assessments
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+          <i class="fas fa-users mr-3"></i> Staff
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 bg-gray-50">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <h1 class="text-2xl font-semibold text-black">Assessment Dashboard</h1>
+        <button class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">
+            <a href="{% url 'users:logout' %}">
+            <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <div class="text-3xl font-bold">{{ assessment_count }}</div>
+          <p class="text-sm text-gray-500 mb-2">Total Assessments</p>
+          <p class="text-sm text-gray-700 flex items-center gap-1">
+            <i class="fas fa-arrow-up text-gray-900"></i> 12% from last month
+          </p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <div class="text-3xl font-bold">{{ pending_assessments }}</div>
+          <p class="text-sm text-gray-500 mb-2">Pending Review</p>
+          <p class="text-sm text-gray-700 flex items-center gap-1">
+            <i class="fas fa-arrow-down"></i> 3% from last week
+          </p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <div class="text-3xl font-bold">{{ completion_rate }}%</div>
+          <p class="text-sm text-gray-500 mb-2">Completion Rate</p>
+          <p class="text-sm text-gray-700 flex items-center gap-1">
+            <i class="fas fa-arrow-up text-gray-900"></i> 7% from last month
+          </p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <div class="text-3xl font-bold">{{ new_in_this_week }}</div>
+          <p class="text-sm text-gray-500 mb-2">New This Week</p>
+          <p class="text-sm text-gray-700 flex items-center gap-1">
+            <i class="fas fa-arrow-up text-gray-900"></i> 22% from last week
+          </p>
+        </div>
+      </div>
+
+      <!-- Recent Assessments -->
+      <div class="bg-white border border-gray-200 rounded-lg mb-8 overflow-hidden">
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-black">Recent Assessments</h2>
+          <div class="flex gap-2">
+            <button class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+              <i class="fas fa-filter mr-2"></i> Filter
+            </button>
+            <button class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+              <i class="fas fa-search mr-2"></i> Search
+            </button>
+          </div>
+        </div>
+        <div class="p-6 overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="text-gray-600 border-b border-gray-200">
+              <tr>
+                <th class="py-3 px-4">Assessment ID</th>
+                <th class="py-3 px-4">Evaluator</th>
+                <th class="py-3 px-4">Staff</th>
+                <th class="py-3 px-4">Total Score</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for assessment in assessments %}
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="py-3 px-4 font-medium">#AS-{{ assessment.pk }}</td>
+                <td class="py-3 px-4">{{ assessment.evaluator_name }}</td>
+                <td class="py-3 px-4">{{ assessment.staff }}</td>
+                <td class="py-3 px-4">{{ assessment.total_score }}/196</td>
+                <td class="py-3 px-4">
+                  {% if assessment.is_approved %}
+                    <span class="inline-flex items-center gap-1 bg-green-500 text-white text-sm px-3 py-1 rounded-full">
+                      <i class="fas fa-check-circle"></i> Approved
+                    </span>
+                  {% else %}
+                    <span class="inline-flex items-center gap-1 bg-yellow-400 text-black text-sm px-3 py-1 rounded-full">
+                      <i class="fas fa-clock"></i> Pending
+                    </span>
+                  {% endif %}
+                </td>
+                <td class="py-3 px-4 flex items-center gap-2">
+                  <a href="{% url 'nursing_department:assessment_detail' assessment.pk %}" class="text-gray-600 hover:text-black">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <button class="text-gray-600 hover:text-black"><i class="fas fa-edit"></i></button>
+                  {% if not assessment.is_approved %}
+                  <form method="post" action="{% url 'nursing_department:approve_assessment' assessment.id %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-green-600 text-white px-2 py-1 rounded-md hover:bg-green-700 transition">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </form>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="7" class="py-6 text-center text-gray-500">
+                  No assessments found.
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 p-4 text-center text-sm text-gray-600">
+    Form Management System © 2023. All rights reserved.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iqraa ByteeWorks</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d0d0d;
+      color: #ffffff;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+      transition: 0.3s;
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-60 bg-grayish flex flex-col p-6">
+      <div class="flex items-center gap-2 mb-10">
+        <img src="{% static 'images/iqraa-logo.png' %}" alt="Logo" class="h-8 w-auto" />
+        <span class="text-sm font-bold tracking-widest">IQRAA</span>
+      </div>
+
+      <nav class="flex-1">
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10">
+              <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'nursing_department:InchargeStaffViewList' %}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10">
+              <i class="fas fa-users"></i> Users
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'nursing_department:InchargeForms' %}" 
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10">
+              <i class="fas fa-file-alt"></i> My Forms
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Panel -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+      <!-- Top Navbar -->
+      <header class="bg-grayish p-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-search text-gray-400"></i>
+          <input type="text" placeholder="Search..."
+                 class="bg-transparent outline-none text-sm text-white placeholder-gray-500">
+        </div>
+
+        <div class="flex items-center gap-6 text-gray-400">
+          <i class="fas fa-bell cursor-pointer hover:text-white"></i>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-user-circle text-2xl"></i>
+            <span class="text-sm font-medium">{{ request.user.full_name|default:request.user.iqraa_id }}</span>
+          </div>
+          <a href="{% url 'users:logout' %}" class="hover:text-white"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-y-auto p-8 space-y-8">
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="glass hover-glow rounded-2xl p-6 text-center">
+            <h3 class="text-sm text-gray-400">Total Forms</h3>
+            <p class="text-2xl font-bold">{{ status.total_forms|default:"0" }}</p>
+          </div>
+          <div class="glass hover-glow rounded-2xl p-6 text-center">
+            <h3 class="text-sm text-gray-400">Pending Forms</h3>
+            <p class="text-2xl font-bold">{{ status.pending_forms|default:"0" }}</p>
+          </div>
+          <div class="glass hover-glow rounded-2xl p-6 text-center">
+            <h3 class="text-sm text-gray-400">Approved</h3>
+            <p class="text-2xl font-bold">{{ status.approved_forms|default:"0" }}</p>
+          </div>
+          <div class="glass hover-glow rounded-2xl p-6 text-center">
+            <h3 class="text-sm text-gray-400">Average Score</h3>
+            <p class="text-2xl font-bold text-purple-400">{{ status.average_score|default:"0" }}%</p>
+          </div>
+        </div>
+
+        <!-- Forms List -->
+        <div class="glass rounded-2xl p-6 mt-8">
+          <h3 class="text-lg font-semibold mb-4">📋 Forms for Your Department</h3>
+          {% if forms %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {% for form in forms %}
+                <a href="{% url 'nursing_department:wardassmentform' %}" class="block">
+                  <div class="glass hover-glow rounded-2xl p-6">
+                    <h4 class="text-base font-semibold text-green-400 mb-2">
+                      {{ form.name|default:"Untitled Form" }}
+                    </h4>
+                    <p class="text-sm text-gray-400 mb-2">
+                      {{ form.describtion|default:"No description available." }}
+                    </p>
+                    <p class="text-xs text-red-500">
+                      <i class="fas fa-map-marker-alt"></i>
+                      {{ form.location_form.location_name|default:"No Location Assigned" }}
+                    </p>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-gray-500 text-sm">No forms available for your department.</p>
+          {% endif %}
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="p-4 border-b border-white/10">
+            <h3 class="text-lg font-semibold">🕓 Recent Activity</h3>
+          </div>
+          <div class="divide-y divide-white/10">
+            {% for act in recent_activities %}
+              <div class="p-4 hover:bg-white/5 transition">
+                {% if act.is_approved %}
+                  <p class="text-sm">✅ Form approved for <span class="text-white font-semibold">{{ act.staff_name }}</span></p>
+                {% else %}
+                  <p class="text-sm">📝 Form submitted for <span class="text-white font-semibold">{{ act.staff_name }}</span></p>
+                {% endif %}
+                <p class="text-xs text-gray-400">{{ act.updated|timesince }} ago</p>
+              </div>
+            {% empty %}
+              <div class="p-4 text-gray-400 text-sm">No recent activity yet.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

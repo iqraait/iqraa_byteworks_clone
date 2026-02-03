@@ -1,0 +1,286 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Forms - Iqraa ByteeWorks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #222;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Card Glass Effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 1.25rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .glass:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Table header */
+    .table-header {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* Evaluator avatar */
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #333;
+      background: #eaeaea;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-view {
+      background: #111;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-view:hover {
+      background: #000;
+      transform: translateY(-1px);
+    }
+
+    .btn-ack {
+      background: transparent;
+      border: 1px solid #000;
+      color: #000;
+    }
+
+    .btn-ack:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Status badges */
+    .badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      border: 1px solid #000;
+    }
+
+    .badge-complete {
+      background: #e7fbe7;
+      border-color: #16a34a;
+      color: #166534;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      border-color: #ca8a04;
+      color: #92400e;
+    }
+
+    /* Row hover */
+    tr:hover td {
+      background: rgba(0, 0, 0, 0.03);
+      transition: background 0.3s ease;
+    }
+
+    /* Glow animation for acknowledgment */
+    .glow-check {
+      color: #16a34a;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+  </style>
+</head>
+
+<body class="flex flex-col items-center justify-start px-6 py-10">
+
+  <!-- Title -->
+  <h1 class="text-3xl font-semibold mb-8 text-center tracking-wide text-gray-900">
+    🩺 My Competency Assessment Forms
+  </h1>
+
+  <!-- Container -->
+  <div class="w-full max-w-6xl glass p-6">
+
+    {% if staff_forms %}
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th class="px-4 py-3 text-left table-header">#</th>
+            <th class="px-4 py-3 text-left table-header">Evaluator</th>
+            <th class="px-4 py-3 text-left table-header">Score</th>
+            <th class="px-4 py-3 text-left table-header">%</th>
+            <th class="px-4 py-3 text-left table-header">Period</th>
+            <th class="px-4 py-3 text-left table-header">Status</th>
+            <th class="px-4 py-3 text-center table-header">Acknowledged</th>
+            <th class="px-4 py-3 text-center table-header">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for form in staff_forms %}
+          <tr class="border-b border-gray-100 hover:shadow-md transition-all">
+            <td class="px-4 py-3">{{ forloop.counter }}</td>
+
+            <td class="px-4 py-3 flex items-center gap-3">
+              <div class="avatar">
+                {% if form.evaluator_name.profile_image %}
+                  <img src="{{ form.evaluator_name.profile_image.url }}" alt="Avatar">
+                {% else %}
+                  {{ form.evaluator_name.username|slice:":1"|upper }}
+                {% endif %}
+              </div>
+              <span>{{ form.evaluator_name|default:"—" }}</span>
+            </td>
+
+            <td class="px-4 py-3">{{ form.total_score|default:"—" }}</td>
+            <td class="px-4 py-3">
+{% if form.percentage %}
+    {% if form.percentage < 60 %}
+        <span class="text-red-600 font-semibold">{{ form.percentage }}%</span>
+
+    {% elif form.percentage < 75 %}
+        <span class="text-orange-500 font-semibold">{{ form.percentage }}%</span>
+
+    {% elif form.percentage < 85 %}
+        <span class="text-yellow-500 font-semibold">{{ form.percentage }}%</span>
+
+    {% elif form.percentage < 95 %}
+        <span class="text-green-600 font-semibold">{{ form.percentage }}%</span>
+
+    {% else %}
+        <span class="text-blue-600 font-semibold">{{ form.percentage }}%</span>
+    {% endif %}
+{% endif %}
+
+              </td>
+            <td class="px-4 py-3">{{ form.evaluation_period|default:"—" }}</td>
+
+            <td class="px-4 py-3">
+              {% if form.is_completed %}
+                <span class="badge badge-complete">Completed</span>
+              {% else %}
+                <span class="badge badge-pending">Pending</span>
+              {% endif %}
+            </td>
+
+<td class="px-4 py-3 text-center">
+  {% if form.staff_acknowdged %}
+    <i class="fas fa-check-circle text-xl glow-check"></i>
+  {% else %}
+    <form method="post" action="{% url 'nursing_department:staff_approve_assessment' form.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-ack">
+        <i class="fas fa-check"></i> Acknowledge
+      </button>
+    </form>
+  {% endif %}
+</td>
+
+        <td class="px-4 py-3 text-center">
+          <a href="{% url 'nursing_department:form1_view' pk=form.id %}" class="text-gray-700 hover:text-black">
+            <i class="fas fa-eye"></i> View
+          </a>
+        </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="text-center py-12 text-gray-500">
+      <i class="fas fa-folder-open text-4xl mb-3"></i>
+      <p>No forms available for your account.</p>
+    </div>
+    {% endif %}
+<!-- Color Indicator Legend -->
+<div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-700">
+
+  <div class="flex items-center gap-2">
+    <span class="inline-block w-4 h-4 rounded-full bg-red-600"></span>
+    <span>Below 60% — <b>Novice</b></span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="inline-block w-4 h-4 rounded-full bg-orange-500"></span>
+    <span>60–75% — <b>Advanced Beginner</b></span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span>
+    <span>75–85% — <b>Competent</b></span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="inline-block w-4 h-4 rounded-full bg-green-600"></span>
+    <span>85–95% — <b>Proficient</b></span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="inline-block w-4 h-4 rounded-full bg-blue-600"></span>
+    <span>95–100% — <b>Expert</b></span>
+  </div>
+
+</div>
+
+
+
+
+  </div>
+  <div class="flex justify-end mb-6">
+  <a href="{% url 'users:logout' %}"
+     class="bg-black text-white px-4 mt-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+     <i class="fas fa-sign-out-alt mr-2"></i> Logout
+  </a>
+</div>
+
+</body>
+</html>

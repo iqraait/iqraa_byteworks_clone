@@ -1,0 +1,240 @@
+/* General Body and Font Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    font-size: 14px;
+  }
+  
+  /* Form Container */
+  .form-container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* --- Layout Sections --- */
+  .top-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .form-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); /* Flexible columns */
+    gap: 20px;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* --- Fieldset and Content --- */
+  fieldset {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px 20px 20px 20px;
+    margin: 0;
+  }
+  
+  legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #007bff; /* Blue legend text */
+    font-size: 16px;
+  }
+  
+  .fieldset-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .form-row {
+    display: grid;
+    gap: 15px 20px;
+    align-items: flex-end;
+  }
+  /* Column Layouts for form rows */
+  .form-row.two-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .form-row.three-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .form-row.four-col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* --- Input Groups & Fields --- */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .input-group label {
+    margin-bottom: 5px;
+    color: #495057;
+  }
+  .required {
+    color: red;
+  }
+  
+  .input-group input[type="text"],
+  .input-group input[type="tel"],
+  .input-group input[type="email"],
+  .input-group select,
+  .input-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  .input-group input[readonly] {
+    background-color: #e9ecef;
+  }
+  .input-group textarea {
+    resize: vertical;
+    min-height: 38px;
+  }
+  
+  .search-container {
+    position: relative;
+    display: flex;
+  }
+  .search-container .fa-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #adb5bd;
+  }
+  
+  /* --- Specific Section Adjustments --- */
+  .patient-info .age-group .age-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+  }
+  .patient-info .age-group .age-inputs input {
+    text-align: center;
+  }
+  
+  .additional-details .medical-claim {
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+    gap: 5px;
+  }
+  .additional-details .medical-claim label {
+    margin: 0;
+  }
+  
+  .appointment-details {
+    position: relative;
+  }
+  .appointment-icons {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    font-size: 16px;
+    color: #007bff;
+  }
+  .appointment-details .doctor-group {
+    grid-column: 2 / 4;
+  }
+  .appointment-details .doctor-profile-label {
+    text-align: right;
+  }
+  .appointment-details .doctor-profile {
+    font-size: 12px;
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .mlc-group {
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 8px;
+  }
+  .mlc-group input {
+    margin-right: 5px;
+  }
+  
+  .registration-type {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    grid-column: 1 / -1;
+  }
+  .registration-type > label {
+    margin: 0;
+  }
+  .radio-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  .radio-group label {
+    margin: 0 0 0 3px;
+    font-weight: normal;
+  }
+  .registration-type button {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* --- Form Footer Buttons --- */
+  .form-footer {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+  }
+  .btn-save {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+  }
+  .btn-clear {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+  }
+  .btn-check,
+  .btn-add-id,
+  .btn-add-note {
+    background-color: #cce5ff;
+    color: #004085;
+    border-color: #b8daff;
+  }

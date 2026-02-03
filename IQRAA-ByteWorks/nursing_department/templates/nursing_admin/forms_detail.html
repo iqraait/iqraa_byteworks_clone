@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Evaluation - {{ assessment.staff_profile }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: #111; }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+    .section-title {
+      border-bottom: 2px solid #eee;
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">Staff Evaluation Details</h1>
+      <a href="{% url 'nursing_department:my_forms' %}" class="text-gray-600 hover:text-black text-sm">← Back</a>
+    </div>
+
+    <h2 class="section-title">Staff Information</h2>
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <p><strong>Name:</strong> {{ assessment.staff_profile }}</p>
+      <p><strong>Designation:</strong> {{ assessment.staff_profile.designation }}</p>
+      <p><strong>Location:</strong> {{ assessment.staff_profile.location }}</p>
+      <p><strong>Date of Join:</strong> {{ assessment.staff_profile.date_of_join }}</p>
+    </div>
+
+    <h2 class="section-title mt-6">Evaluation Summary</h2>
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <p><strong>Evaluation Period:</strong> {{ assessment.evaluation_period }}</p>
+      <p><strong>Evaluator Name:</strong> {{ evaluator }}</p>
+      <p><strong>Performance Type:</strong> {{ assessment.evaluation_perfomance }}</p>
+      <p><strong>Evaluation Date:</strong> {{ assessment.evaluation_date }}</p>
+    </div>
+
+    <h2 class="section-title mt-6">Score Summary</h2>
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <p><strong>Total Score:</strong> {{ assessment.total_score }}</p>
+      <p><strong>Percentage:</strong> {{ assessment.percentage }}%</p>
+      <p><strong>Approved:</strong> {{ assessment.is_approved|yesno:"Yes,No" }}</p>
+    </div>
+
+    {% if assessment.data %}
+    <h2 class="section-title mt-6">Detailed Ratings</h2>
+    <div class="mt-2 space-y-2">
+      {% for key, value in assessment.data.items %}
+        <div class="flex justify-between bg-gray-50 rounded-lg p-2">
+          <span>{{ key|capfirst }}</span>
+          <span class="font-semibold">{{ value }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+      <a href="{% url 'nursing_department:my_forms' %}" class="px-6 py-2 rounded-lg bg-black text-white hover:bg-gray-800">Close</a>
+    </div>
+
+  </div>
+</body>
+</html>

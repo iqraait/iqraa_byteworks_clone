@@ -1,0 +1,320 @@
+{% load static %} <!-- Load static tags at the top of the file -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Registration</title>
+  <link rel="stylesheet" href="{% static 'front_office/css/patient_register.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <div class="form-container">
+    <form method="POST" action="{% url 'front_office:patient_register' %}">
+      {% csrf_token %}
+
+      <div class="form-section top-section">
+        <div class="input-group">
+          <label for="patient-code">Patient Code</label>
+          <div class="search-container">
+            <input type="text" id="patient-code" placeholder="IQRAA NO:" />
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="mobile-no">Mobile no.:</label>
+          {{patient_form.mobile_number}}
+        </div>
+        <div class="input-group">
+          <label for="passport-no">Passport number:</label>
+          <input type="text" id="passport-no" />
+        </div>
+        <div class="input-group">
+          <label for="id_title">Title:</label>
+          {{ patient_form.title }}
+        </div>
+        <div class="input-group">
+          <label for="first-name">First Name:</label>
+          {{ patient_form.first_name }}
+        </div>
+        <div class="input-group">
+          <label for="middle-name">Middle Name:</label>
+          {{ patient_form.middle_name }}
+        </div>
+        <div class="input-group">
+          <label for="last-name">Last Name:</label>
+          <input type="text" id="last-name" />
+        </div>
+        <div class="input-group">
+          <label for="id_title">Gender:</label>
+          {{ patient_form.gender }}
+        </div>
+        <div class="input-group">
+          <label for="id_title">Patient Type:</label>
+          {{ patient_form.patient_type }}
+        </div>
+      </div>
+
+      <!-- Main Body -->
+      <div class="form-body">
+        <!-- Left Column -->
+        <div class="form-column left-column">
+          <fieldset class="patient-info">
+            <div class="fieldset-content">
+              <div class="form-row three-col">
+                <div class="input-group">
+                  <label for="whatsapp-no">Whatsapp Number:</label>
+                  {{ patient_form.whatapp_number }}
+                </div>
+                <div class="input-group">
+                  <label for="dob">Dob:</label>
+                  {{ patient_form.date_of_birth }}
+                </div>
+                <div class="input-group age-group">
+                  <label>Age:</label>
+                  <div class="age-inputs">
+                    <input type="text" id="age-years" placeholder="Years" readonly />
+                    <input type="text" id="age-months" placeholder="Months" readonly />
+                    <input type="text" id="age-days" placeholder="Days" readonly />
+                  </div>
+
+                </div>
+              </div>
+              <div class="form-row two-col">
+                <div class="input-group">
+                  <label for="abha-number">ABHA Number:</label>
+                  <input type="text" id="abha-number" />
+                </div>
+                <div class="input-group">
+                  <label for="abha-address">ABHA Address:</label>
+                  <select id="abha-address">
+                    <option>--Select--</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="address-details">
+            <legend>Address Details</legend>
+            <div class="fieldset-content">
+              <div class="form-row two-col">
+                <div class="input-group">
+                  <label for="area">Area: </label>
+                  <select id="area">
+                    <option>--Select--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="address1">Address Line 1:</label>
+                  {{ address_form.address_line_1 }}
+                </div>
+              </div>
+              <div class="form-row two-col">
+                <div class="input-group">
+                  <label for="address2">Address Line 2:</label>
+                  {{ address_form.address_line_2 }}
+                </div>
+                <div class="input-group">
+                  <label for="address3">Address Line 3:</label>
+                  <input type="text" id="address3" />
+                </div>
+              </div>
+              <div class="form-row four-col">
+                <div class="input-group">
+                  {{ address_form.city.label_tag }}
+                  {{ address_form.city }}
+                </div>
+                <div class="input-group">
+                  <label for="country">Country:</label>
+                  <input type="text" id="country" value="INDIA" readonly />
+                </div>
+                <div class="input-group">
+                  <label for="state">State:</label>
+                  <input type="text" id="state" value="KERALA" readonly />
+                </div>
+                <div class="input-group">
+                  {{ address_form.pincode.label_tag }}
+                  {{ address_form.pincode }}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="local-body">Local Body:</label>
+                  <select id="local-body">
+                    <option>--Select--</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="additional-details">
+            <legend>Additional Details</legend>
+            <div class="fieldset-content">
+              <div class="form-row four-col">
+                <div class="input-group">
+                  <label for="marital-status">Marital status:</label><select id="marital-status">
+                    <option>--Select Marital Status--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="religion">Religion:</label><select id="religion">
+                    <option>--Select Religion--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="blood-group">Blood group:</label><select id="blood-group">
+                    <option>--Select Blood Group--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="alt-phone">Alternate Phone No:</label><input type="tel" id="alt-phone" />
+                </div>
+              </div>
+              <div class="form-row four-col">
+                <div class="input-group">
+                  <label for="email">Email:</label><input type="email" id="email" />
+                </div>
+                <div class="input-group">
+                  <label for="guardian">Guardian name:</label><input type="text" id="guardian" />
+                </div>
+                <div class="input-group">
+                  <label for="is-doctor">Patient is Doctor:</label><select id="is-doctor">
+                    <option>--Select--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="is-staff">Patient is Staff:</label><select id="is-staff">
+                    <option>--Select--</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row four-col">
+                <div class="input-group">
+                  <label for="emergency-no">Emergency number:</label><input type="tel" id="emergency-no" />
+                </div>
+                <div class="input-group">
+                  <label for="ref-doctor">Referred by doctor:</label><select id="ref-doctor">
+                    <option>--Select Doctors--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="ref-hospital">Referred from hospital:</label><select id="ref-hospital">
+                    <option>--Select Hospital--</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="remarks">Referral Remarks:</label><textarea id="remarks">Remarks</textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="ref-staff">Referred Staff:</label><input type="text" id="ref-staff" />
+                </div>
+                <div class="input-group">
+                  <label for="aadhar">Aadhar Number:</label><input type="text" id="aadhar" />
+                </div>
+                <div class="input-group medical-claim">
+                  <input type="checkbox" id="medical-claim" /><label for="medical-claim">Medical Claim:</label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Right Column -->
+        <div class="form-column right-column">
+          <fieldset class="appointment-details">
+            <legend>Appointment Details</legend>
+            <div class="appointment-icons">
+              <i class="fa-solid fa-floppy-disk"></i><i class="fa-solid fa-print"></i><i class="fa-solid fa-eye"></i><i
+                class="fa-solid fa-rotate-left"></i><i class="fa-solid fa-rotate-right"></i><i
+                class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-arrow-right"></i><i
+                class="fa-solid fa-circle-plus"></i><i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+            <div class="fieldset-content">
+              <div class="form-row three-col">
+                <div class="input-group">
+                  <label for="id_appointment_date">Appointment date:</label>
+                  {{ patient_form.appoinment_date }}
+                </div>
+                <div class="input-group">
+                  {{ patient_form.department.label_tag }}
+                  {{ patient_form.department }}
+                </div>
+
+                <div class="input-group doctor-group">
+                  <label for="doctor" class="doctor-profile-label"><a href="#" class="doctor-profile">Doctor
+                      profile</a></label>
+
+                  <div class="input-group">
+                    {{ patient_form.doctor_name.label_tag }}
+                    {{ patient_form.doctor_name }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-row three-col">
+                <div class="input-group">
+                  <label for="doctor-visit">Doctor Visit:</label>
+
+                  <div class="input-group">
+                    {{ patient_form.doctor_vist }}
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label for="referred-by">Referred by:</label>
+
+                  <div class="input-group">
+                    {{ patient_form.doctor_name }}
+                  </div>
+                </div>
+                <div class="input-group mlc-group">
+                  <input type="checkbox" id="mlc" />
+                  <label for="mlc">MLC</label>
+                </div>
+              </div>
+              <div class="form-row registration-type">
+                <label>Registration type:</label>
+                <div class="radio-group">
+                  <input type="radio" id="token" name="reg-type" />
+                  <label for="token">Token</label>
+                  <input type="radio" id="booking" name="reg-type" />
+                  <label for="booking">Booking</label>
+                  <input type="radio" id="new-token" name="reg-type" />
+                  <label for="new-token">New Token</label>
+                </div>
+                <button type="button">Please select</button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+      <!-- Form Footer Buttons -->
+      <div class="form-footer">
+        <button type="submit" class="btn btn-save">
+          <i class="fas fa-check"></i> Save
+        </button>
+        <button type="button" class="btn btn-clear">
+          <i class="fas fa-times"></i> Clear
+        </button>
+        <button type="button" class="btn btn-check">
+          <i class="fas fa-search"></i> Check Duplication
+        </button>
+        <button type="button" class="btn btn-add-id">
+          <i class="fas fa-plus-circle"></i> Add ID Card
+        </button>
+        <button type="button" class="btn btn-add-note">
+          <i class="fas fa-pen"></i> Add Patient Note
+        </button>
+      </div>
+    </form>
+  </div>
+  <script src="{% static 'front_office/js/age-calculator.js' %}"></script>
+
+</body>
+
+</html>

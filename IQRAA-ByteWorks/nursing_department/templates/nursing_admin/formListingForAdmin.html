@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iqraa ByteeWorks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            color: var(--black);
+        }
+
+        .logo span {
+            font-weight: 300;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--black);
+            color: var(--white);
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        /* Main Layout */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--white);
+            border-right: 1px solid var(--gray-200);
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 72px);
+            position: sticky;
+            top: 72px;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+            padding: 0 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.85rem 2rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+        }
+
+        .nav-item.active {
+            background-color: var(--gray-50);
+            color: var(--black);
+            border-left-color: var(--black);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background-color: var(--gray-50);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--white);
+            color: var(--gray-900);
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-primary {
+            background-color: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--gray-800);
+            border-color: var(--gray-800);
+        }
+
+        /* Form Cards Grid */
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
+
+        .form-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .form-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background-color: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-description {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .form-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .form-date {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* Main Content Card */
+        .content-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .status-approved {
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray-500);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .empty-state p {
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            border-top: 1px solid var(--gray-200);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .forms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+                padding: 1rem 0;
+            }
+
+            .nav-items {
+                display: flex;
+                overflow-x: auto;
+                padding: 0 1rem;
+            }
+
+            .nav-item {
+                padding: 0.75rem 1rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                white-space: nowrap;
+            }
+
+            .nav-item.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--black);
+            }
+
+            .nav-title {
+                display: none;
+            }
+
+            .forms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">IQRAA<span>Hospital</span></div>
+        <div class="user-menu">
+            <button class="notification-btn">
+                <i class="far fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            <div class="user-profile">
+                <div class="avatar">AD</div>
+                <div>
+                    <div style="font-weight: 500;">Admin User</div>
+                    <div style="font-size: 0.85rem; color: var(--gray-600);">Nursing Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Main Navigation</div>
+                <div class="nav-items">
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="#" class="nav-item active">
+                        <i class="fas fa-file-alt"></i> Forms
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user-md"></i> Assessments
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-users"></i> Staff
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Resources</div>
+                <div class="nav-items">
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-question-circle"></i> Help
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Form Templates</h1>
+            </div>
+        
+            <div class="forms-grid">
+                {% for form in forms %}
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                    </div>
+                    <h3 class="form-title">{{ form.name }}</h3>
+                    <p class="form-description">
+                        {{ form.describtion }}
+                    </p>
+                    <div class="form-meta">
+                        {% if form.updated_at %}
+                        <div class="form-date">
+                            <i class="far fa-calendar"></i> Updated: {{ form.updated_at|date:"m/d/Y" }}
+                        </div>
+                        {% endif %}
+        
+                        <div class="form-usage">
+                            {{ form.usage_count|default:"0" }} Active Uses
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No form templates available.</p>
+                {% endfor %}
+            </div>
+        </main>
+        
+    </div> <!-- closed dashboard-container -->
+
+    <footer>
+        <p>Form Management System &copy; 2023. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Simple interactivity for the form templates page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle navigation active state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Create new form button functionality
+            const createFormBtn = document.getElementById('createFormBtn');
+            createFormBtn.addEventListener('click', function () {
+                alert('Create New Form functionality would open a form creation modal.');
+            });
+
+            // Action buttons for form cards
+            const actionButtons = document.querySelectorAll('.form-actions .action-btn');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const icon = this.querySelector('i').className;
+
+                    if (icon.includes('fa-trash')) {
+                        if (confirm('Are you sure you want to delete this form template?')) {
+                            this.closest('.form-card').style.opacity = '0';
+                            setTimeout(() => {
+                                this.closest('.form-card').remove();
+                            }, 300);
+                        }
+                    } else if (icon.includes('fa-edit')) {
+                        alert('Edit form functionality would open an editor.');
+                    } else if (icon.includes('fa-copy')) {
+                        alert('Form duplication process would start.');
+                    }
+                });
+            });
+
+            // Make entire form card clickable
+            const formCards = document.querySelectorAll('.form-card');
+            formCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    alert('View form details page would open.');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

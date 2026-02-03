@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Submitted Forms - Iqraa ByteeWorks</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d0d0d;
+      color: #ffffff;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+      transition: 0.3s;
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-60 bg-grayish flex flex-col p-6">
+      <div class="flex items-center gap-2 mb-10">
+        <img src="{% static 'images/iqraa-logo.png' %}" alt="Logo" class="h-8 w-auto" />
+        <span class="text-sm font-bold tracking-widest">IQRAA</span>
+      </div>
+
+      <nav class="flex-1">
+        <ul class="space-y-3 text-sm">
+          <li><a href="{% url 'nursing_department:InchargeDashboard' %}" 
+                 class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10"><i
+                class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li><a href="#" 
+                 class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10"><i
+                class="fas fa-users"></i> Staff</a></li>
+          <li><a href="{% url 'nursing_department:InchargeForms' %}" 
+                 class="flex items-center gap-3 p-3 rounded-lg bg-white/10 font-semibold"><i
+                class="fas fa-file-alt"></i> My Forms</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Panel -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+      <!-- Top Navbar -->
+      <header class="bg-grayish p-4 flex justify-between items-center">
+<div class="flex items-center gap-2">
+  <i class="fas fa-search text-gray-400"></i>
+  <input type="text" id="searchInput" placeholder="Search by Staff"
+         class="bg-transparent outline-none text-sm text-white placeholder-gray-500">
+</div>
+
+        <div class="flex items-center gap-6 text-gray-400">
+          <i class="fas fa-bell cursor-pointer hover:text-white"></i>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-user-circle text-2xl"></i>
+            <span class="text-sm font-medium">{{ request.user.iqraa_id }}</span>
+          </div>
+          <a href="{% url 'users:logout' %}" class="hover:text-white"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-y-auto p-8 space-y-8">
+        <h1 class="text-3xl font-bold text-cyan-400 mb-6">My Submitted Forms</h1>
+
+        {% if forms %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+{% for form in forms %}
+<div class="glass hover-glow rounded-2xl p-6 border border-white/10 form-card"
+     data-staff-id="{{ form.staff_profile.employee_code|lower }}"
+     data-staff-name="{{ form.staff_profile.employee|lower }}">
+  <div class="flex justify-between items-start mb-3">
+    <h2 class="text-xl font-semibold text-white">{{ form.staff_profile.employee }}</h2>
+    {% if form.is_approved %}
+      <span class="bg-green-700/30 text-green-400 px-3 py-1 rounded-full text-xs font-semibold">Approved</span>
+    {% else %}
+      <span class="bg-yellow-700/30 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold">Pending</span>
+    {% endif %}
+  </div>
+            <p class="text-sm text-gray-400 mb-1"><strong>Department:</strong> {{ form.staff.department }}</p>
+            <p class="text-sm text-gray-400 mb-1"><strong>Evaluation Period:</strong> {{ form.evaluation_period }}</p>
+            <p class="text-sm text-gray-400 mb-1"><strong>Total Score:</strong> {{ form.total_score }}</p>
+            <p class="text-sm text-gray-400 mb-1"><strong>Percentage:</strong> {{ form.percentage }}%</p>
+            <p class="text-sm text-gray-400 mb-4"><strong>Date:</strong> {{ form.evaluation_date|date:"d M Y" }}</p>
+
+            <div class="flex justify-end">
+              <a href="#" class="text-sm font-medium bg-gradient-to-r from-cyan-400 to-purple-500 
+                 text-black px-4 py-2 rounded-lg hover:opacity-90 transition">
+                View Details
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+          <p class="text-gray-400 text-center text-sm mt-10">No forms submitted yet.</p>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+  <script>
+const searchInput = document.getElementById('searchInput');
+const formCards = document.querySelectorAll('.form-card');
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase().trim();
+
+  formCards.forEach(card => {
+    const staffId = card.getAttribute('data-staff-id');
+    const staffName = card.getAttribute('data-staff-name');
+
+    if (staffId.includes(query) || staffName.includes(query)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
+</script>
+
+</body>
+</html>

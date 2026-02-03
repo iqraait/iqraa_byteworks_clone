@@ -1,0 +1,144 @@
+/* static/css/style.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #000;
+  }
+  
+  header {
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    padding: 20px 24px;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .hero {
+    display: grid;
+    gap: 48px;
+    padding: 80px 24px;
+  }
+  
+  @media (min-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .hero h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  
+  .hero p {
+    font-size: 1.125rem;
+    color: #4b5563;
+    margin-bottom: 24px;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-btn {
+    padding: 12px 24px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    background: #fff;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .dropdown-btn:hover {
+    background: #000;
+    color: #fff;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    width: 200px;
+    display: none;
+    z-index: 10;
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    padding: 10px 16px;
+    color: #374151;
+  }
+  
+  .dropdown-menu a:hover {
+    background: #f3f4f6;
+  }
+  
+  .hero-img {
+    width: 100%;
+    height: 384px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .how-it-works {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    text-align: center;
+  }
+  
+  .steps {
+    display: grid;
+    gap: 40px;
+  }
+  
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .step-number {
+    width: 64px;
+    height: 64px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+  
+  footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 24px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  

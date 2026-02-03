@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Iqraa ByteeWorks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Rajdhani:wght@500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #000;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #particles {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      z-index: 0;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 0 25px rgba(0,255,255,0.2);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 1.5rem;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(0,255,255,0.7), rgba(255,0,255,0.6));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .logo {
+      width: 90px;
+      margin: 0 auto 1rem;
+      filter: brightness(0) invert(1);
+      animation: glow 3s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px cyan) brightness(0) invert(1); }
+      to { filter: drop-shadow(0 0 20px magenta) brightness(0) invert(1); }
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px rgba(0,255,255,0.6);
+      letter-spacing: 2px;
+    }
+
+    .input-glass {
+      width: 100%;
+      padding: 12px 16px;
+      margin-bottom: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      appearance: none;
+    }
+
+    .input-glass::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .input-glass:focus {
+      border: 1px solid rgba(0,255,255,0.7);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 12px rgba(0,255,255,0.4);
+      outline: none;
+    }
+
+    /* Neon glowing dropdown */
+    select.input-glass:hover, select.input-glass:focus {
+      border: 1px solid rgba(255,0,255,0.8);
+      box-shadow: 0 0 15px rgba(0,255,255,0.6), 0 0 25px rgba(255,0,255,0.4);
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 0.75rem;
+      background: linear-gradient(90deg, #00ffff, #ff00ff);
+      color: #000;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border: none;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0,255,255,0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255,0,255,0.7);
+    }
+
+    /* Arrow inside dropdown */
+    .dropdown-arrow {
+      pointer-events: none;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      fill: cyan;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(-50%) scale(1); }
+      100% { transform: translateY(-50%) scale(1.2); }
+    }
+
+    .dropdown-wrapper {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="glass">
+    <img src="your-logo.png" alt="Logo" class="logo">
+    <h2>CREATE ACCOUNT</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Staff Dropdown with neon arrow -->
+      <div class="dropdown-wrapper">
+        <select name="staff" class="input-glass" required>
+          <option value="">Select Staff</option>
+          {% for id, name in staff_list %}
+            <option value="{{ id }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+        <svg class="dropdown-arrow" width="20" height="20" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="2" fill="none" d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+
+      <!-- Username and Password -->
+      <input type="text" name="username" placeholder="Username" class="input-glass" required>
+      <input type="password" name="password" placeholder="Password" class="input-glass" required>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+
+  <script>
+    // particles animation
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = innerWidth, h = canvas.height = innerHeight;
+    let parts = [];
+    const rnd = (min,max)=>Math.random()*(max-min)+min;
+    class P{
+      constructor(){this.x=rnd(0,w);this.y=rnd(0,h);this.vx=rnd(-.4,.4);this.vy=rnd(-.4,.4);this.r=rnd(1,2);}
+      upd(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>w)this.vx*=-1;if(this.y<0||this.y>h)this.vy*=-1;}
+      draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle="rgba(255,255,255,.3)";ctx.fill();}
+    }
+    for(let i=0;i<100;i++)parts.push(new P());
+    function loop(){ctx.clearRect(0,0,w,h);parts.forEach(p=>{p.upd();p.draw();});requestAnimationFrame(loop);}
+    loop();
+    addEventListener('resize',()=>{w=canvas.width=innerWidth;h=canvas.height=innerHeight;});
+  </script>
+
+</body>
+</html>
